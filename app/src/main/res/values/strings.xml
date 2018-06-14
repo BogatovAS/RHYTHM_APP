@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">РИТМ</string>
+    <string name="button">РАССЧИТАТЬ</string>
+    <string name="Title">ВВЕДИТЕ ВАШИ ОЦЕНКИ</string>
+    <string name="_1">ПК 1</string>
+    <string name="tk_1">TK 1</string>
+    <string name="tk_2">TK 2</string>
+    <string name="pk_2">ПК 2</string>
+    <string name="zero">0</string>
+    <string name="needmark">ЖЕЛАЕМАЯ ОЦЕНКА В ЗАЧЕТКУ</string>
+    <string name="SI">Рейтинг СИ</string>
+    <string name="Exam">Экзамен</string>
+    <string name="NeedMarkHint">5</string>
+    <string name="Clear">Сбросить</string>
+</resources>
