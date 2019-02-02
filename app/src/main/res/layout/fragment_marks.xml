@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Marks">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:weightSum="5">
+
+        <TextView
+            android:id="@+id/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="@string/MarksFragmentTitle"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="25sp"
+            android:typeface="sans" />
+
+        <LinearLayout
+            android:id="@+id/loginForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/Login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/colorPrimaryLight"
+                android:gravity="center"
+                android:hint="@string/LoginHint"
+                android:paddingVertical="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="25sp"
+                android:typeface="sans" />
+
+            <EditText
+                android:id="@+id/Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/colorPrimaryLight"
+                android:gravity="center"
+                android:hint="@string/PasswordHint"
+                android:inputType="textPassword"
+                android:paddingVertical="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="25sp"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/okButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/button_ripple"
+                android:text="@string/Save"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/White">
+
+            <TableRow
+                android:id="@+id/TitleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tablerow_border_shape"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:weightSum="9">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/Subject"
+                    android:textColor="@color/White"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/tk_1"
+                    android:textColor="@color/White"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/_1"
+                    android:textColor="@color/White"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/tk_2"
+                    android:textColor="@color/White"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/pk_2"
+                    android:textColor="@color/White"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/RatingSi"
+                    android:textColor="@color/White"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/ExamMark"
+                    android:textColor="@color/White"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="@string/ResultMark"
+                    android:textColor="@color/White"
+                    android:textSize="10sp" />
+            </TableRow>
+        </TableLayout>
+
+        <Button
+            android:id="@+id/DeleteCreds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_ripple"
+            android:padding="10dp"
+            android:text="@string/SignOut"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="20sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/Updated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="20sp"
+            android:typeface="sans" />
+
+    </LinearLayout>
+</FrameLayout>

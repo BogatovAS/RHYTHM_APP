@@ -5,244 +5,27 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#033185"
+    android:background="@color/colorPrimary"
     tools:context="com.andrey.rhythm.MainActivity"
-    tools:ignore="ExtraText">
+    tools:ignore="ExtraText"
+    android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/Title"
-        android:layout_width="0dp"
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:gravity="center"
-        android:text="@string/Title"
-        android:background="#012444"
-        android:textColor="#0fe5db"
-        android:textSize="25sp"
-        android:typeface="serif"
-        app:layout_constraintBottom_toTopOf="@+id/TK1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_view"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/NeedMark"
-        android:layout_width="0dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="176dp"
-        android:background="#012444"
-        android:gravity="center"
-        android:text="@string/needmark"
-        android:textColor="#0fe5db"
-        android:textSize="20sp"
-        android:typeface="serif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@drawable/shape"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/needmark"
-        android:layout_width="22dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="168dp"
-        android:layout_marginRight="168dp"
-        android:layout_marginTop="3dp"
-        android:background="@android:color/transparent"
-        android:hint="@string/NeedMarkHint"
-        android:inputType="number"
-        android:textColor="#e8f70e"
-        android:textColorHint="#dde389"
-        android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NeedMark" />
-
-    <TextView
-        android:id="@+id/TK1"
-        android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="68dp"
-        android:gravity="center"
-        android:text="@string/tk_1"
-        android:textColor="#0fe5db"
-        android:textSize="20sp"
-        android:typeface="serif"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/PK1"
-        android:layout_width="0dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp"
-        android:gravity="center"
-        android:text="@string/_1"
-        android:textColor="#0fe5db"
-        android:textSize="20sp"
-        android:typeface="serif"
-        app:layout_constraintStart_toEndOf="@+id/TK1"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
-
-
-    <TextView
-        android:id="@+id/TK2"
-        android:layout_width="43dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="43dp"
-        android:layout_marginStart="43dp"
-        android:gravity="center"
-        android:text="@string/tk_2"
-        android:textColor="#0fe5db"
-        android:textSize="20sp"
-        android:typeface="serif"
-        app:layout_constraintStart_toEndOf="@+id/PK1"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
-
-    <TextView
-        android:id="@+id/PK2"
-        android:layout_width="46dp"
-        android:layout_height="51dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp"
-        android:gravity="center"
-        android:text="@string/pk_2"
-        android:textColor="#0fe5db"
-        android:textSize="20sp"
-        android:typeface="serif"
-        app:layout_constraintStart_toEndOf="@+id/TK2"
-        app:layout_constraintTop_toBottomOf="@+id/Title" />
-
-
-    <EditText
-        android:id="@+id/TK_1"
-        android:layout_width="43dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:hint="@string/zero"
-        android:gravity="center"
-        android:inputType="numberDecimal"
-        android:textColor="#e8f70e"
-        android:textColorHint="#dde389"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="@+id/TK1"
-        app:layout_constraintTop_toBottomOf="@+id/TK1" />
-
-    <EditText
-        android:id="@+id/PK_1"
-        android:layout_width="46dp"
-        android:layout_height="41dp"
-        android:background="@android:color/transparent"
-        android:hint="@string/zero"
-        android:gravity="center"
-        android:inputType="numberDecimal"
-        android:textColor="#e8f70e"
-        android:textColorHint="#dde389"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="@+id/PK1"
-        app:layout_constraintTop_toBottomOf="@+id/PK1" />
-
-
-    <EditText
-        android:id="@+id/TK_2"
-        android:layout_width="43dp"
-        android:layout_height="41dp"
-        android:background="@android:color/transparent"
-        android:hint="@string/zero"
-        android:gravity="center"
-        android:inputType="numberDecimal"
-        android:textColor="#e8f70e"
-        android:textColorHint="#dde389"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="@+id/TK2"
-        app:layout_constraintTop_toBottomOf="@+id/TK2" />
-
-
-    <EditText
-        android:id="@+id/PK_2"
-        android:layout_width="46dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:hint="@string/zero"
-        android:gravity="center"
-        android:inputType="numberDecimal"
-        android:textColor="#e8f70e"
-        android:textColorHint="#dde389"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="@+id/PK2"
-        app:layout_constraintTop_toBottomOf="@+id/PK2" />
-
-
-    <Button
-        android:id="@+id/button1"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:background="@drawable/button"
-        android:gravity="center"
-        android:text="@string/button"
-        android:textColor="#8ffae0"
-        android:textSize="35sp"
-        android:typeface="serif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/Result"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:hint="@string/SI"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:typeface="serif"
-        android:textColor="#8ffae0"
-        android:textColorHint="#dde389"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1" />
-
-    <TextView
-        android:id="@+id/Exam"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:hint="@string/Exam"
-        android:typeface="serif"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:textColor="#8ffae0"
-        android:textColorHint="#dde389"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1" />
-
-    <Button
-        android:id="@+id/clrbutton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="25dp"
-        android:layout_marginLeft="6dp"
-        android:layout_marginStart="6dp"
-        android:background="@drawable/c_but"
+        android:background="@color/colorPrimaryLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="parent"
+        app:menu="@menu/bottom_nav_bar" />
 
 </android.support.constraint.ConstraintLayout>

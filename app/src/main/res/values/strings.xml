@@ -12,4 +12,32 @@
     <string name="Exam">Экзамен</string>
     <string name="NeedMarkHint">5</string>
     <string name="Clear">Сбросить</string>
+    <string name="todo">TODO</string>
+    <string name="marks">Marks</string>
+    <string name="home">Home</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">MARKS</string>
+    <string name="title_activity_login">Sign in</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="SignOut">Выйти из аккаунта</string>
+    <string name="ResultMark">ОЦЕНКА</string>
+    <string name="ExamMark">ЭКЗ</string>
+    <string name="RatingSi">СИ</string>
+    <string name="Subject">Дисциплина</string>
+    <string name="Save">Сохранить</string>
+    <string name="PasswordHint">Пароль</string>
+    <string name="LoginHint">Логин</string>
+    <string name="MarksFragmentTitle">ОЦЕНКИ ПО ДИСЦИПЛИНАМ</string>
 </resources>
