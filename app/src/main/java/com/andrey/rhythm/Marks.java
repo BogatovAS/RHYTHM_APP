@@ -2,6 +2,7 @@ package com.andrey.rhythm;
 
 
 import android.annotation.TargetApi;
+import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -44,6 +45,8 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,7 +107,8 @@ public class Marks extends Fragment {
             }
         });
 
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "РИТМ" + File.separator + "creds.txt");
+        File file = new File(getContext().getFilesDir().getAbsolutePath() + File.separator + "РИТМ" + File.separator + "creds.txt");
+
         if (!file.exists()) {
             view.findViewById(R.id.loginForm).setVisibility(View.VISIBLE);
             view.findViewById(R.id.table).setVisibility(View.INVISIBLE);
@@ -120,7 +124,7 @@ public class Marks extends Fragment {
 
     public String ReadFromFile() {
         String dataFromFile = "";
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "РИТМ" + File.separator + "creds.txt");
+        File file = new File(getContext().getFilesDir().getAbsolutePath() + File.separator + "РИТМ" + File.separator + "creds.txt");
         if (file.exists()) {
             try {
                 InputStream is = new FileInputStream(file);
@@ -141,7 +145,7 @@ public class Marks extends Fragment {
     }
 
     public void CreateFile(String login, String password) {
-        File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "РИТМ");
+        File directory = new File(getContext().getFilesDir().getAbsolutePath() + File.separator + "РИТМ");
         File file = new File(directory.getPath() + File.separator + "creds.txt");
         if (!file.exists()) {
             try {
@@ -160,20 +164,76 @@ public class Marks extends Fragment {
         }
     }
 
+    public void CacheMarks(String marks)
+    {
+        File directory = new File(getContext().getFilesDir().getAbsolutePath() + File.separator + "РИТМ");
+        File file = new File(directory.getPath() + File.separator + "marks.txt");
+        try {
+            directory.mkdir();
+            file.createNewFile();
+            OutputStream fo = new FileOutputStream(file);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fo);
+            outputStreamWriter.write(marks);
+            outputStreamWriter.close();
+            fo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(getActivity(), "Файл с Вашими оценками создан", Toast.LENGTH_LONG).show();
+    }
+
+    public String ReadCachedMarks()
+    {
+        String dataFromFile = "";
+        File directory = new File(getContext().getFilesDir().getAbsolutePath() + File.separator + "РИТМ");
+        File file = new File(directory.getPath() + File.separator + "marks.txt");
+        if (file.exists()) {
+            try {
+                InputStream is = new FileInputStream(file);
+                InputStreamReader inputStreamReader = new InputStreamReader(is);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString;
+
+                while ((receiveString = bufferedReader.readLine()) != null) {
+                    dataFromFile += receiveString + "\n";
+                }
+                inputStreamReader.close();
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return dataFromFile;
+    }
+
     public boolean GetAllInfo(View view, String creds) {
 
         HttpUrlConnectionExample http = new HttpUrlConnectionExample();
 
-        String marks = null;
-        try {
-            marks = http.execute(creds).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        String marks = this.ReadCachedMarks();
+
+        if(marks.isEmpty()) {
+            try {
+                marks = http.execute(creds).get();
+                this.CacheMarks(marks);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
         List<String> splitMarks = new ArrayList<>(Arrays.asList(marks.split("\n")));
+
+        String currentDay = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"));
+
+        if(!splitMarks.get(0).equals(currentDay))
+        {
+            try {
+                marks = http.execute(creds).get();
+                this.CacheMarks(marks);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
 
         TextView updated = view.findViewById(R.id.Updated);
 
@@ -198,9 +258,9 @@ public class Marks extends Fragment {
             tr.setWeightSum(9);
             tr.setPadding(0, 10, 0, 10);
 
-            for (int i = 0; i < subject.length; i++) {
+            for (String s : subject) {
                 TextView tv = new TextView(getContext());
-                tv.setText(subject[i]);
+                tv.setText(s);
                 tv.setTextSize(10);
                 tv.setGravity(Gravity.CENTER);
                 TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
@@ -219,8 +279,6 @@ public class Marks extends Fragment {
         private HttpURLConnection conn;
 
         private String vowels = "ауеёюяэоиы";
-
-        private final String USER_AGENT = "Mozilla/5.0";
 
         @Override
         protected String doInBackground(String... creds) {
@@ -246,8 +304,6 @@ public class Marks extends Fragment {
 
                 String result = http.GetPageContent(marksPage);
                 resultMarks += GetMarks(result);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -255,7 +311,7 @@ public class Marks extends Fragment {
         }
 
 
-        public String GetUpdatedDate(String html) {
+        private String GetUpdatedDate(String html) {
             Document doc = Jsoup.parse(html);
             String resultString = "";
             List<Element> faculties = doc.getElementsByClass("span4");
@@ -269,8 +325,7 @@ public class Marks extends Fragment {
             return resultString;
         }
 
-
-        public String GetMarks(String html) {
+        private String GetMarks(String html) {
             Document doc = Jsoup.parse(html);
             String resultString = "";
             List<Element> trs = doc.getElementsByTag("tr");
@@ -309,7 +364,7 @@ public class Marks extends Fragment {
             return resultString;
         }
 
-        public void sendPost(String url, String postParams) throws Exception {
+        private void sendPost(String url, String postParams) throws Exception {
 
             URL obj = new URL(url);
             conn = (HttpURLConnection) obj.openConnection();
@@ -326,7 +381,7 @@ public class Marks extends Fragment {
             conn.getResponseCode();
         }
 
-        public String GetPageContent(String url) throws Exception {
+        private String GetPageContent(String url) throws Exception {
 
             URL obj = new URL(url);
             try {
@@ -344,18 +399,7 @@ public class Marks extends Fragment {
 
             conn.setUseCaches(false);
 
-            // act like a browser
-            conn.setRequestProperty("User-Agent", USER_AGENT);
-            conn.setRequestProperty("Accept",
-                    "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-            conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-            if (cookies != null) {
-                for (String cookie : this.cookies) {
-                    conn.addRequestProperty("Cookie", cookie.split(";", 1)[0]);
-                }
-            }
-            BufferedReader in =
-                    new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
 
@@ -372,20 +416,16 @@ public class Marks extends Fragment {
                 e.printStackTrace();
             }
 
-            // Get the response cookies
-            setCookies(conn.getHeaderFields().get("Set-Cookie"));
-
             return response.toString();
         }
 
-        public String getFormParams(String html, String username, String password)
+        private String getFormParams(String html, String username, String password)
                 throws UnsupportedEncodingException {
 
             System.out.println("Extracting form's data...");
 
             Document doc = Jsoup.parse(html);
 
-            // Google form id
             Element loginform = doc.getElementById("login-form");
             Elements inputElements = loginform.getElementsByTag("input");
             List<String> paramList = new ArrayList<String>();
@@ -410,14 +450,6 @@ public class Marks extends Fragment {
                 }
             }
             return result.toString();
-        }
-
-        public List<String> getCookies() {
-            return cookies;
-        }
-
-        public void setCookies(List<String> cookies) {
-            this.cookies = cookies;
         }
     }
 
