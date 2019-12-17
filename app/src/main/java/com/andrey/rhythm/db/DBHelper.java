@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "rhythmDB";
     public static final String SUBJECTS_TABLE = "subjects";
     public static final String NOTES_TABLE = "notes";

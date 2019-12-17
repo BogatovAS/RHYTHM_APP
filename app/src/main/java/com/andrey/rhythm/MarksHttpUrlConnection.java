@@ -71,7 +71,7 @@ public class MarksHttpUrlConnection extends AsyncTask<String, Void, String> {
         return resultString;
     }
 
-    public String GetMarks1(String html) {
+    public String GetMarks(String html) {
         Document doc = Jsoup.parse(html);
         String resultString = "";
         List<Element> trs = doc.getElementsByTag("tr");
@@ -109,44 +109,6 @@ public class MarksHttpUrlConnection extends AsyncTask<String, Void, String> {
         }
         return resultString;
     }
-
-    public String GetMarks(String html)
-    {
-        Document doc = Jsoup.parse(html); // 1
-        String resultString = "";
-        List<Element> trs = doc.getElementsByTag("tr");
-        trs.remove(trs.get(0));
-        for (Element tr : trs) // 2
-        {
-            List<String> tdsText = tr.getElementsByTag("td").eachText(); // 3
-
-            String[] words = tdsText.get(0).split(" ");
-            tdsText.remove(tdsText.get(0));
-            String subject = "";
-
-            for (String word : words) // 4
-            {
-                if (word.length() >= 4) // 5
-                {
-                    subject += word.subSequence(0, 3); // 6
-                }
-                else // 7
-                {
-                    subject += word; // 8
-                }
-                subject += " "; // 9
-            }
-            resultString += subject + ";"; // 10
-
-            for (String td : tdsText) // 11
-            {
-                resultString += td + ";"; // 12
-            }
-            resultString += "\n"; // 13
-        }
-        return resultString; // 14
-    }
-
 
     private int sendPost(String url, String postParams) throws Exception {
 
