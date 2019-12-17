@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     Marks marksFragment = new Marks();
     HomeFragment homeFragment = new HomeFragment();
+    NotesFragment notesFragment = new NotesFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
             case R.id.web:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, marksFragment).commit();
+                return true;
+            case R.id.notes:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, notesFragment).commit();
                 return true;
         }
         return false;

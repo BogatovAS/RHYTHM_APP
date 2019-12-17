@@ -5,5 +5,6 @@
     <color name="colorPrimaryLight">#c1d5e0</color>
     <color name="colorSecondaryDark">#000000</color>
     <color name="White">#ffffff</color>
+    <color name="colorBlackLight">#43000A12</color>
 
 </resources>

@@ -13,8 +13,8 @@
     <string name="NeedMarkHint">5</string>
     <string name="Clear">Сбросить</string>
     <string name="todo">TODO</string>
-    <string name="marks">Marks</string>
-    <string name="home">Home</string>
+    <string name="marks">Оценки</string>
+    <string name="home">Рейтинг</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">MARKS</string>
@@ -40,4 +40,6 @@
     <string name="PasswordHint">Пароль</string>
     <string name="LoginHint">Логин</string>
     <string name="MarksFragmentTitle">ОЦЕНКИ ПО ДИСЦИПЛИНАМ</string>
+    <string name="Notes">ЗАМЕТКИ</string>
+    <string name="notes">Заметки</string>
 </resources>

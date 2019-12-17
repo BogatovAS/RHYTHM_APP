@@ -52,7 +52,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:gravity="center"
                     android:hint="@string/zero"
                     android:inputType="numberDecimal"
                     android:textColor="@color/White"
@@ -83,7 +82,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:gravity="center"
                     android:hint="@string/zero"
                     android:inputType="numberDecimal"
                     android:textColor="@color/White"
@@ -114,7 +112,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:gravity="center"
                     android:hint="@string/zero"
                     android:inputType="numberDecimal"
                     android:textColor="@color/White"
@@ -145,7 +142,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:gravity="center"
                     android:hint="@string/zero"
                     android:inputType="numberDecimal"
                     android:textColor="@color/White"
@@ -179,7 +175,7 @@
                 android:gravity="center"
                 android:hint="@string/NeedMarkHint"
                 android:inputType="number"
-                android:paddingVertical="20dp"
+                android:paddingVertical="5dp"
                 android:textColor="@color/White"
                 android:textColorHint="@color/colorPrimaryLight"
                 android:textSize="35sp" />
@@ -203,12 +199,27 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:hint="@string/Exam"
-            android:paddingBottom="100dp"
+            android:paddingBottom="20dp"
             android:textColor="@color/White"
             android:textColorHint="@color/colorPrimaryLight"
             android:textSize="18sp"
             android:typeface="sans" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/dates"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+
+                android:hint="Даты промежуточных контролей"
+                android:textColor="@color/White"
+                android:textColorHint="@color/colorPrimaryLight"
+                android:textSize="15sp"
+                android:typeface="sans"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

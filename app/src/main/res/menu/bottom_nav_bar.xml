@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_trending_up_black_24dp"
         android:title="@string/home"/>
     <item android:id="@+id/web"
-        android:icon="@drawable/ic_cloud_black_24dp"
+        android:icon="@drawable/ic_school_black_24dp"
         android:title="@string/marks"/>
+    <item android:id="@+id/notes"
+        android:icon="@drawable/ic_note_black_24dp"
+        android:title="@string/notes"/>
 </menu>

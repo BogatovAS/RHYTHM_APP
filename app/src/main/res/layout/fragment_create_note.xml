@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="5">
+
+        <TextView
+            android:id="@+id/scheduleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:paddingVertical="10dp"
+            android:text="ДОБАВЛЕНИЕ ЗАМЕТКИ"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="25sp"
+            android:typeface="sans" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Дисциплина: "
+                android:padding="5dp"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="15sp">
+            </TextView>
+            <EditText
+                android:id="@+id/create_note_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/White"
+                android:textColorHint="@color/colorPrimaryLight"
+                android:gravity="center"
+                android:hint="Дисциплина"
+                android:textSize="20sp">
+            </EditText>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryLight"
+                android:text="Заметка: "
+                android:padding="5dp"
+                android:textSize="15sp">
+            </TextView>
+            <EditText
+                android:id="@+id/create_note_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/White"
+                android:textColorHint="@color/colorPrimaryLight"
+                android:gravity="top|center"
+                android:hint="Заметка"
+                android:textSize="20sp">
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4">
+            <ImageButton
+                android:id="@+id/create_note_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_ripple"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_note_add_black_24dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

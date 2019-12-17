@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/common_google_signin_btn_text_light_disabled" android:state_pressed="true" />
-    <item android:drawable="@color/colorPrimaryDark" />
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="10dip"/>
+            <solid android:color="@color/colorBlackLight"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="10dip"/>
+            <solid android:color="@color/colorPrimaryDark"/>
+        </shape>
+    </item>
+
 </selector>

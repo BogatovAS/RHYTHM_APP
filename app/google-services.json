@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "214925812237",
+    "firebase_url": "https://rhythmapp-d5be3.firebaseio.com",
+    "project_id": "rhythmapp-d5be3",
+    "storage_bucket": "rhythmapp-d5be3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214925812237:android:064f535c12bbdbcb17eb44",
+        "android_client_info": {
+          "package_name": "com.andrey.rhythm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214925812237-4pmephilp8ljlq6qdv53f4c5idi6m368.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andrey.rhythm",
+            "certificate_hash": "e1851ac539761dbc7afd4c7fc6631d1e0d433939"
+          }
+        },
+        {
+          "client_id": "214925812237-710rd9d9o1g2aippmhmjje5o9m36nceu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzvE44NjNMZ1wWwmallM5a2NrCLrBNzTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214925812237-710rd9d9o1g2aippmhmjje5o9m36nceu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

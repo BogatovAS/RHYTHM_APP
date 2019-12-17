@@ -2,13 +2,9 @@ package com.andrey.rhythm;
 
 
 import android.annotation.TargetApi;
-import android.content.ContextWrapper;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -21,15 +17,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andrey.rhythm.db.DBHelper;
+import com.andrey.rhythm.models.SubjectMarks;
 import com.andrey.rythm.R;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -38,13 +30,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -58,6 +43,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class Marks extends Fragment {
 
+    DBHelper dbSQL;
 
     public Marks() {
         // Required empty public constructor
@@ -70,13 +56,20 @@ public class Marks extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_marks, container, false);
 
+        dbSQL = new DBHelper(getContext());
+
         view.findViewById(R.id.okButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view1) {
                 EditText login = view.findViewById(R.id.Login);
                 EditText password = view.findViewById(R.id.Password);
 
-                boolean areCorrectCreds = GetAllInfo(view, login.getText().toString() + ";" + password.getText().toString());
+                boolean areCorrectCreds = false;
+                try {
+                    areCorrectCreds = GetAllInfo(view, login.getText().toString() + ";" + password.getText().toString());
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 if (areCorrectCreds) {
                     CreateFile(login.getText().toString(), password.getText().toString());
@@ -93,17 +86,20 @@ public class Marks extends Fragment {
         view.findViewById(R.id.DeleteCreds).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view1) {
-                File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "РИТМ");
+                File directory = new File(getContext().getFilesDir().getAbsolutePath() + File.separator + "РИТМ");
                 File file = new File(directory.getPath() + File.separator + "creds.txt");
                 if (file.exists()) {
                     file.delete();
                     directory.delete();
-                    Toast.makeText(getActivity(), "Файл с Вашими данными удален", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Файл с Вашими данными удален", Toast.LENGTH_SHORT).show();
                     view.findViewById(R.id.loginForm).setVisibility(View.VISIBLE);
                     view.findViewById(R.id.table).setVisibility(View.INVISIBLE);
                     view.findViewById(R.id.Updated).setVisibility(View.INVISIBLE);
                     view.findViewById(R.id.DeleteCreds).setVisibility(View.INVISIBLE);
                 }
+
+                dbSQL.deleteSubjectsTable();
+                Toast.makeText(getActivity(), "Файл с Вашими оценками удален", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -117,7 +113,11 @@ public class Marks extends Fragment {
         } else {
             view.findViewById(R.id.loginForm).setVisibility(View.GONE);
             String inputData = ReadFromFile();
-            GetAllInfo(view, inputData);
+            try {
+                GetAllInfo(view, inputData);
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         return view;
     }
@@ -164,84 +164,47 @@ public class Marks extends Fragment {
         }
     }
 
-    public void CacheMarks(String marks)
-    {
-        File directory = new File(getContext().getFilesDir().getAbsolutePath() + File.separator + "РИТМ");
-        File file = new File(directory.getPath() + File.separator + "marks.txt");
-        try {
-            directory.mkdir();
-            file.createNewFile();
-            OutputStream fo = new FileOutputStream(file);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fo);
-            outputStreamWriter.write(marks);
-            outputStreamWriter.close();
-            fo.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Toast.makeText(getActivity(), "Файл с Вашими оценками создан", Toast.LENGTH_LONG).show();
-    }
+    public ArrayList<SubjectMarks> GetMarks(String marksString, DBHelper dbSQL) {
+        ArrayList<SubjectMarks> marks = new ArrayList<>();
+        List<String> splitMarks = new ArrayList<>(Arrays.asList(marksString.split("\n")));
 
-    public String ReadCachedMarks()
-    {
-        String dataFromFile = "";
-        File directory = new File(getContext().getFilesDir().getAbsolutePath() + File.separator + "РИТМ");
-        File file = new File(directory.getPath() + File.separator + "marks.txt");
-        if (file.exists()) {
-            try {
-                InputStream is = new FileInputStream(file);
-                InputStreamReader inputStreamReader = new InputStreamReader(is);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString;
+        for(int i=1; i<splitMarks.size();i++)
+        {
+            String[] subjectSplit = splitMarks.get(i).split(":");
+            SubjectMarks subject = new SubjectMarks();
+            subject.Subject = subjectSplit[0];
+            subject.Marks = subjectSplit[1].split(";");
+            subject.UpdateDate = splitMarks.get(0);
+            boolean isAdded = dbSQL.addSubjectRecord(subject);
 
-                while ((receiveString = bufferedReader.readLine()) != null) {
-                    dataFromFile += receiveString + "\n";
-                }
-                inputStreamReader.close();
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(isAdded) {
+                marks.add(subject);
             }
         }
-        return dataFromFile;
+        return marks;
     }
 
-    public boolean GetAllInfo(View view, String creds) {
-
-        HttpUrlConnectionExample http = new HttpUrlConnectionExample();
-
-        String marks = this.ReadCachedMarks();
+    public boolean GetAllInfo(View view, String credentials) throws ExecutionException, InterruptedException {
+        MarksHttpUrlConnection http = new MarksHttpUrlConnection();
+        ArrayList<SubjectMarks> marks = dbSQL.getAllSubjectsRecords();
 
         if(marks.isEmpty()) {
-            try {
-                marks = http.execute(creds).get();
-                this.CacheMarks(marks);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+            String marksString = http.execute(credentials).get();
+            marks = GetMarks(marksString, this.dbSQL);
         }
 
-        List<String> splitMarks = new ArrayList<>(Arrays.asList(marks.split("\n")));
-
         String currentDay = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"));
-
-        if(!splitMarks.get(0).equals(currentDay))
-        {
-            try {
-                marks = http.execute(creds).get();
-                this.CacheMarks(marks);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+        if(!marks.get(0).UpdateDate.equals(currentDay)){
+            marks.clear();
+            String marksString = http.execute(credentials).get();
+            marks = GetMarks(marksString, this.dbSQL);
         }
 
         TextView updated = view.findViewById(R.id.Updated);
 
-        updated.setText("Обновлено: " + splitMarks.get(0));
+        updated.setText("Обновлено: " + marks.get(0).UpdateDate);
 
-        splitMarks.remove(0);
-
-        if (splitMarks.isEmpty()) {
+        if (marks.isEmpty()) {
             return false;
         }
 
@@ -250,20 +213,26 @@ public class Marks extends Fragment {
         table.removeAllViewsInLayout();
         table.addView(titleRow);
 
-        for (String mark : splitMarks) {
-            String[] subject = mark.split(";");
-
+        for (SubjectMarks subject : marks) {
             TableRow tr = new TableRow(getContext());
             tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             tr.setWeightSum(9);
             tr.setPadding(0, 10, 0, 10);
 
-            for (String s : subject) {
-                TextView tv = new TextView(getContext());
-                tv.setText(s);
+            TextView tv = new TextView(getContext());
+            tv.setText(subject.Subject);
+            tv.setTextSize(10);
+            tv.setGravity(Gravity.CENTER);
+            TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+            tv.setLayoutParams(params);
+            tv.setTextColor(Color.WHITE);
+            tr.addView(tv);
+
+            for (String markString : subject.Marks) {
+                tv = new TextView(getContext());
+                tv.setText(markString);
                 tv.setTextSize(10);
                 tv.setGravity(Gravity.CENTER);
-                TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
                 tv.setLayoutParams(params);
                 tv.setTextColor(Color.WHITE);
                 tr.addView(tv);
@@ -272,185 +241,5 @@ public class Marks extends Fragment {
         }
         return true;
     }
-
-    class HttpUrlConnectionExample extends AsyncTask<String, Void, String> {
-
-        private List<String> cookies;
-        private HttpURLConnection conn;
-
-        private String vowels = "ауеёюяэоиы";
-
-        @Override
-        protected String doInBackground(String... creds) {
-            String loginUrl = "http://ritm.ispu.ru/login";
-            String marksPage = "http://ritm.ispu.ru/profile/grades";
-            String mainPage = "http://ritm.ispu.ru";
-
-            final HttpUrlConnectionExample http = new HttpUrlConnectionExample();
-
-            // make sure cookies is turn on
-            CookieHandler.setDefault(new CookieManager());
-
-            List<String> splitCreds = new ArrayList(Arrays.asList(creds[0].split(";")));
-
-            String resultMarks = "";
-            try {
-                String page = http.GetPageContent(loginUrl);
-                String postParams = http.getFormParams(page, splitCreds.get(0), splitCreds.get(1));
-                http.sendPost(loginUrl, postParams);
-
-                String UpdatedPageResult = http.GetPageContent(mainPage);
-                resultMarks += GetUpdatedDate(UpdatedPageResult) + "\n";
-
-                String result = http.GetPageContent(marksPage);
-                resultMarks += GetMarks(result);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return resultMarks;
-        }
-
-
-        private String GetUpdatedDate(String html) {
-            Document doc = Jsoup.parse(html);
-            String resultString = "";
-            List<Element> faculties = doc.getElementsByClass("span4");
-
-            for (Element faculty : faculties) {
-                if (faculty.getElementsByTag("span").first().text().equals("ИВТФ")) {
-                    resultString = faculty.getElementsByTag("p").text();
-                    break;
-                }
-            }
-            return resultString;
-        }
-
-        private String GetMarks(String html) {
-            Document doc = Jsoup.parse(html);
-            String resultString = "";
-            List<Element> trs = doc.getElementsByTag("tr");
-            trs.remove(trs.get(0));
-            for (Element tr : trs) {
-                List<String> tdsText = tr.getElementsByTag("td").eachText();
-
-                String[] words = tdsText.get(0).split(" ");
-                tdsText.remove(tdsText.get(0));
-                String subject = "";
-
-                for (String word : words) {
-                    if (word.length() >= 4) {
-                        if (vowels.indexOf(word.charAt(2)) == -1) {
-                            subject += word.subSequence(0, 3);
-                        } else {
-                            for (int i = 3; i < word.length(); i++) {
-                                if (vowels.indexOf(word.charAt(i)) == -1) {
-                                    subject += word.subSequence(0, i + 1);
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        subject += word;
-                    }
-                    subject += " ";
-                }
-                resultString += subject + ";";
-
-                for (String td : tdsText) {
-                    resultString += td + ";";
-                }
-                resultString += "\n";
-            }
-            return resultString;
-        }
-
-        private void sendPost(String url, String postParams) throws Exception {
-
-            URL obj = new URL(url);
-            conn = (HttpURLConnection) obj.openConnection();
-
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Connection", "keep-alive");
-
-            // Send post request
-            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-            wr.writeBytes(postParams);
-            wr.flush();
-            wr.close();
-
-            conn.getResponseCode();
-        }
-
-        private String GetPageContent(String url) throws Exception {
-
-            URL obj = new URL(url);
-            try {
-                conn = (HttpURLConnection) obj.openConnection();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // default is GET
-            try {
-                conn.setRequestMethod("GET");
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            }
-
-            conn.setUseCaches(false);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            try {
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return response.toString();
-        }
-
-        private String getFormParams(String html, String username, String password)
-                throws UnsupportedEncodingException {
-
-            System.out.println("Extracting form's data...");
-
-            Document doc = Jsoup.parse(html);
-
-            Element loginform = doc.getElementById("login-form");
-            Elements inputElements = loginform.getElementsByTag("input");
-            List<String> paramList = new ArrayList<String>();
-            for (Element inputElement : inputElements) {
-                String key = inputElement.attr("name");
-                String value = inputElement.attr("value");
-
-                if (key.equals("LoginForm[username]"))
-                    value = username;
-                else if (key.equals("LoginForm[password]"))
-                    value = password;
-                paramList.add(key + "=" + URLEncoder.encode(value, "UTF-8"));
-            }
-
-            // build parameters list
-            StringBuilder result = new StringBuilder();
-            for (String param : paramList) {
-                if (result.length() == 0) {
-                    result.append(param);
-                } else {
-                    result.append("&" + param);
-                }
-            }
-            return result.toString();
-        }
-    }
-
 }
+
